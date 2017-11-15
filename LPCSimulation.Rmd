@@ -70,6 +70,6 @@ ggplot(outc, aes(x=n, y=A_n)) +
   xlab("Iteration number n")
 ```
 
-![](https://raw.githubusercontent.com/dominicnoy/LPC/master/plot/LPCsimpleplot-1.png)
+![](https://raw.githubusercontent.com/dominicnoy/LPC/master/LPCsimpleplot-1.png)
 
 
