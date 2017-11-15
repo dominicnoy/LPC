@@ -9,13 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 ## The LPC model 
-$$
-\begin{align}
-\begin{split}
-A_{n+1} = (1-\alpha)A_n+T_n+M_{n+1}-M_n-C,\label{eq.LPCschulze}
-\end{split}
-\end{align}
-$$
+![Image of LPC](/Users/mac/Dropbox/GithubR/LPC/image/LPC.png)
+
+
 
 - $A_n$ is the asynchrony at iteration $n$, 
 - $C$ is a constant metronome interval, 
