@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 ## The LPC model 
-![Image of LPC](/Users/mac/Dropbox/GithubR/LPC/image/LPC.png)
+![Image of LPC](https://github.com/dominicnoy/LPC/blob/master/LPC.png)
 
 
 
