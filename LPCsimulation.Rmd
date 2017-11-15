@@ -62,31 +62,7 @@ ggplot(outc, aes(x=n, y=A_n)) +
         strip.background = element_blank(),
         axis.text=element_text(size=15),
         axis.title=element_text(size=15))+
-  ylab(expression(A[n]))+
+  ylab("A_n")+
   xlab("Iteration number n")
 ```
 
-
-
-
-This is a simulation function with random intercept. Here $\mu_M$ changes for each sequence. 
-```{r LPC random}
-Simulate_bGLS_RANDOM<-function(N, nseq, alpha, st, sm, random) 
-{
-  As<-matrix(NA, nrow=N, ncol=nseq)
-  for(o in 1:nseq)
-  {
-    M=rnorm(N+2)
-    T=rnorm(N+2)
-    
-    Z=st*T[1:(N+1)]-sm*M[2:(N+2)]+sm*M[1:(N+1)]
-    AA=rep(0,N+2)
-    for(I in 1:(N+1))
-      {
-        AA[I+1]<-(1-alpha)*AA[I]+Z[I]
-      }
-    As[,o]<-AA[3:(N+2)]+rnorm(1,0,random) #add random intercept
-  }
-  As
-}
-```
