@@ -9,15 +9,15 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 ## The LPC model 
-![Image of LPC](https://raw.githubusercontent.com/dominicnoy/LPC/master/LPC.png)
 
 
 
-- $A_n$ is the asynchrony at iteration $n$, 
-- $C$ is a constant metronome interval, 
-- $M_n$ is the motor delay, and 
-- $T_n$ is the Time Keeper interval. 
-- $M_n$ and $T_n$ are random variables with $M_n \sim NV(\mu_M, \sigma^2_M)$ and $T_n \sim NV(\mu_T, \sigma^2_T)$
+
+- A_n is the asynchrony at iteration n, 
+- C is a constant metronome interval, 
+- M_n is the motor delay, and 
+- T_n is the Time Keeper interval. 
+- M_n and T_n are random variables with M_n ~ NV(\mu_M, \sigma^2_M) and T_n ~ NV(\mu_T, \sigma^2_T)
 
 ## Simulation Function
 ```{r LPC simple}
