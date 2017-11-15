@@ -40,7 +40,9 @@ Simulate<-function(N, nseq, alpha, st, sm)
     }
   As
 }
+```
 
+```{r LPC simple plot}
 #Set parameter values for simulation  
 set.seed(1234567)
 outc<-as.data.frame(Simulate(N=100, nseq=1, alpha=0.5, st=10, sm=5))
