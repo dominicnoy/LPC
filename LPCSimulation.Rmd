@@ -4,12 +4,11 @@ author: "Dominic Noy"
 date: "15 November 2017"
 output:
   html_document: default
-  pdf_document: default
-  output: md_document
+  md_document: default
 ---
 
 ```{r setup, include=FALSE, echo=F}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.path = "/Users/mac/Dropbox/GithubR/LPC/plot/")
 ```
 ## The LPC model 
 
@@ -45,7 +44,7 @@ Simulate<-function(N, nseq, alpha, st, sm)
 }
 ```
 
-```{r LPC simple plot}
+```{r LPCsimpleplot}
 #Set parameter values for simulation  
 set.seed(1234567)
 outc<-as.data.frame(Simulate(N=100, nseq=1, alpha=0.5, st=10, sm=5))
@@ -71,3 +70,4 @@ ggplot(outc, aes(x=n, y=A_n)) +
   xlab("Iteration number n")
 ```
 
+![](https://raw.githubusercontent.com/dominicnoy/LPC/master/plot/LPCsimpleplot-1.png)
