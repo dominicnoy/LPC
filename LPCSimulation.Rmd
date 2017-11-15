@@ -21,7 +21,13 @@ knitr::opts_chunk$set(echo = TRUE, fig.path = "/Users/mac/Dropbox/GithubR/LPC/pl
 - T_n is the Time Keeper interval. 
 - M_n and T_n are random variables with M_n ~ NV(\mu_M, \sigma^2_M) and T_n ~ NV(\mu_T, \sigma^2_T)
 
+
+
+
 ## Simulation Function
+The following simulation function is adapted from 
+Nori Jacoby bGLS code: http://www.norijacoby.com/bgls.htm
+
 ```{r LPC simple}
 #Simulation function
 Simulate<-function(N, nseq, alpha, st, sm)
