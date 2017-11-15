@@ -4,7 +4,7 @@ author: "Dominic Noy"
 date: "15 November 2017"
 output:
   html_document: default
-  md_document: default
+  
 ---
 
 ```{r setup, include=FALSE, echo=F}
