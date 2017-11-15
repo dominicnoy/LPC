@@ -1,0 +1,40 @@
+---
+title: "LPCsimulation"
+author: "Dominic Noy"
+date: "15 November 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo=F}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Simulation Function
+
+This is a simulation function
+
+```{r LPC simple}
+  Simulate_bGLS<-function(N, nseq, alpha, st, sm)
+  {
+    As<-matrix(NA, nrow=N, ncol=nseq)
+    for(o in 1:nseq)
+    {
+      M=rnorm(N+2)
+      T=rnorm(N+2)
+      
+      Z=st*T[1:(N+1)]-sm*M[2:(N+2)]+sm*M[1:(N+1)]
+      AA=rep(0,N+2)
+      for(I in 1:(N+1))
+      {
+        AA[I+1]<-(1-alpha)*AA[I]+Z[I]
+      }
+      As[,o]<-AA[3:(N+2)]
+    }
+    As
+  }
+```
+
+This is a simulation function with random intercept
+```{r LPC random}
+
+```
