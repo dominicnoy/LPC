@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 ## The LPC model 
 
-
+![LPCeq](https://raw.githubusercontent.com/dominicnoy/LPC/master/LPC.png)
 
 
 - A_n is the asynchrony at iteration n, 
