@@ -71,3 +71,5 @@ ggplot(outc, aes(x=n, y=A_n)) +
 ```
 
 ![](https://raw.githubusercontent.com/dominicnoy/LPC/master/plot/LPCsimpleplot-1.png)
+
+
