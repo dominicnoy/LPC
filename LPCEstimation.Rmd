@@ -1,0 +1,105 @@
+---
+title: "LPC Estimation"
+author: "Dominic Noy"
+date: "11/16/2017"
+output: html_document
+---
+
+#here are missing to include packages
+The following function estimates the parameters of the LPC model from multiple sequences within a single model (extended Linear Model). 
+The algorithm is based on https://books.google.pt/books/about/Mixed_Effects_Models_in_S_and_S_PLUS.html?id=y54QDUTmvDcC&redir_esc=y
+```{r extended Linear Model}
+eLM<-function(As, MEAN_A)
+{
+    MEAN_A=0
+    esm=As-MEAN_A  
+    
+    b=esm[2:dim(As)[1],]
+    B=esm[1:(dim(As)[1]-1),]
+    
+    #construct dataframe depending on nseq=1 or >1
+    if(dim(data.frame(B))[2]>1)
+      {
+        require(reshape2)
+        data<-melt(b); names(data)<-c("n", "nseq", "b")
+        data$B<-melt(B)$value 
+      }else{data<-data.frame(c(1:length(b)), rep(1,length(b)), b, B); 
+    
+    names(data)<-c("n", "nseq", "b", "B")}
+    
+    
+    ##--Alpha_hat as function of lambda
+    fun_lambda<-function(lambda)
+    {
+      #Construct subset LAMBDA
+      out<-lapply(split(data, data$nseq), function(x) 
+      {
+        M<-dim(x)[1]
+        #contruct LAMBDA
+        diagonal=diag(M)
+        offdiagonal=off_diag(M)*lambda
+        LAMBDA=diagonal+offdiagonal
+        #transformation
+        LAMBDA_inv=matrix_inverse(LAMBDA)
+        
+        y_star<-LAMBDA_inv%*%x$b
+        x_star<-LAMBDA_inv%*%x$B
+        list(y_star, x_star, LAMBDA)
+      })
+      
+      ##OLS
+      #x and y are stacked for OLS  
+      x_star<-unlist(lapply(out, `[[`, 1))
+      y_star<-unlist(lapply(out, `[[`, 2))
+      
+      #get each individual LAMBDA
+      ind_LAMBDA<-lapply(out, `[[`, 3)
+      
+      #OLS
+      alpha_lambda_hat=solve(t(x_star)%*%x_star)%*%t(x_star)%*%y_star 
+      
+      #output
+      return(list(x_star, y_star, alpha_lambda_hat, ind_LAMBDA))
+    }
+    ##--
+    
+    ##--PROFILED MAXIMUM LIKELIHOOD
+    MLE<-function(lambda)
+    {
+      #lambda<--0.2
+      out<-fun_lambda(lambda)
+      
+      
+      x_star<-out[[1]]
+      y_star<-out[[2]]
+      M<-length(x_star)
+      alpha<-out[[3]]
+      ind_LAMBDA<-out[[4]]
+      
+      LA<-sum(unlist(lapply(ind_LAMBDA, function(x) log(det(x)))))
+      return(-(-M*log(sqrt(t(y_star-x_star%*%alpha)%*%(y_star-x_star%*%alpha)))-0.5*LA))
+    }
+    ##--
+    
+    lambda_hat<-optim(par=0.1, MLE,method = c("L-BFGS-B"),lower = -0.5, upper = -0.1)$par
+    M<-dim(data)[1]
+    
+    #contruct LAMBDA
+    diagonal=diag(M)
+    offdiagonal=off_diag(M)*lambda_hat
+    LAMBDA=diagonal+offdiagonal
+    
+    ##--transformation
+    LAMBDA_inv=matrix_inverse(LAMBDA)
+    y_star<-LAMBDA_inv%*%data$b
+    x_star<-LAMBDA_inv%*%data$B
+    
+    ##--OLS
+    alpha_hat=1-solve(t(x_star)%*%x_star)%*%t(x_star)%*%y_star 
+    sig_e<-summary(lm(y_star~x_star))$sigm^2
+    sm<-sqrt(-(sig_e*lambda_hat))+2.2204e-16)
+    st<-sqrt(sig_e-2*(sm^2))
+    data.frame(alpha_hat, st, sm)  
+}
+```
+
