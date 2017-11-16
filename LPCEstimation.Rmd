@@ -5,10 +5,17 @@ date: "11/16/2017"
 output: html_document
 ---
 
-#here are missing to include packages
+
 The following function estimates the parameters of the LPC model from multiple sequences within a single model (extended Linear Model). 
 The algorithm is based on https://books.google.pt/books/about/Mixed_Effects_Models_in_S_and_S_PLUS.html?id=y54QDUTmvDcC&redir_esc=y
 ```{r extended Linear Model}
+#get aux functions:
+#read from GitHub
+library(RCurl)
+matrix_inverse<-source("https://raw.githubusercontent.com/dominicnoy/LPC/master/aux_functions/matrix_inverse.R")$value
+off_diag<- source("https://raw.githubusercontent.com/dominicnoy/LPC/master/aux_functions/off_diag.R")$value
+
+
 eLM<-function(As, MEAN_A)
 {
     MEAN_A=0
@@ -97,7 +104,7 @@ eLM<-function(As, MEAN_A)
     ##--OLS
     alpha_hat=1-solve(t(x_star)%*%x_star)%*%t(x_star)%*%y_star 
     sig_e<-summary(lm(y_star~x_star))$sigm^2
-    sm<-sqrt(-(sig_e*lambda_hat))+2.2204e-16)
+    sm<-sqrt(-(sig_e*lambda_hat)+2.2204e-16)
     st<-sqrt(sig_e-2*(sm^2))
     data.frame(alpha_hat, st, sm)  
 }
