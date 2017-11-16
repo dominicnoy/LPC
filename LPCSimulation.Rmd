@@ -27,6 +27,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.path = "/Users/mac/Dropbox/GithubR/LPC/pl
 The following simulation function is adapted from 
 Nori Jacoby bGLS code: http://www.norijacoby.com/bgls.htm
 
+###Simulation LPC simple
 ```{r LPC simple}
 #Simulation function
 Simulate<-function(N, nseq, alpha, st, sm)
@@ -82,5 +83,79 @@ ggplot(outc, aes(x=n, y=A_n)) +
 
 
 <img src="https://raw.githubusercontent.com/dominicnoy/LPC/master/LPCsimpleplot-1.png" width="600">
+
+
+###Simulation LPC random
+To each series is added a random intercept. This simulates a varying \mu_M across sequences. 
+
+```{r LPCsimpleplot}
+#Simulation function with random intercept
+Simulate_random<-function(N, nseq, alpha, st, sm, random) 
+{
+  As<-matrix(NA, nrow=N, ncol=nseq)
+  for(o in 1:nseq)
+    {
+      M=rnorm(N+2)
+      T=rnorm(N+2)
+    
+      Z=st*T[1:(N+1)]-sm*M[2:(N+2)]+sm*M[1:(N+1)]
+      AA=rep(0,N+2)
+      for(I in 1:(N+1))
+        {
+          AA[I+1]<-(1-alpha)*AA[I]+Z[I]
+        }
+      As[,o]<-AA[3:(N+2)]+rnorm(1,0,random) #add random intercept
+     }
+  As
+}
+
+nseq=15
+As_2<-Simulate_random(N=10, nseq=nseq,  a=0.5, st=10, sm=5, random=2)
+As_2<-as.data.frame(As_2)
+As_2$id<-c(1:dim(As_2)[1])
+As_2$random<-"Sigma = 2"
+Asy_2<-reshape(As_2,  varying=1:nseq, v.names = "Asynchrony", 
+               ,direction="long")
+
+As_5<-Simulate_random(N=10, nseq=nseq,  a=0.5, st=10, sm=5, random=5)
+As_5<-as.data.frame(As_5)
+As_5$id<-c(1:dim(As_5)[1])
+As_5$random<-"Sigma = 5"
+Asy_5<-reshape(As_5,  varying=1:nseq, v.names = "Asynchrony", 
+               ,direction="long")
+
+As_10<-Simulate_random(N=10, nseq=nseq,  a=0.5, st=10, sm=5, random=10)
+As_10<-as.data.frame(As_10)
+As_10$id<-c(1:dim(As_10)[1])
+As_10$random<-"Sigma = 10"
+Asy_10<-reshape(As_10,  varying=1:nseq, v.names = "Asynchrony", 
+                ,direction="long")
+
+Asy<-rbind(Asy_2, Asy_5, Asy_10)
+Asy$random<-factor(Asy$random, levels= c("Sigma = 2", "Sigma = 5", "Sigma = 10"))
+
+source("/Users/mac/Dropbox/GithubR/LPC/aux_functions/summarySE.R")
+Asy_g<-summarySE(Asy, measurevar="Asynchrony", groupvars=c("random","id"))
+
+Asy_g$random = factor(Asy_g$random,levels(Asy_g$random)[c(3,2,1)])
+ggplot() +
+  geom_line(data=Asy, aes(x=id, y=Asynchrony, group=interaction(time, random), color=time))+
+  geom_point(data=Asy, aes(x=id, y=Asynchrony, group=interaction(time,random), color=time))+
+  geom_ribbon(data=Asy_g,aes(x=id, ymin=(Asynchrony-sd), ymax=(Asynchrony+sd), group=random, fill=random),  alpha=0.5)+
+  #facet_grid(random~.)+
+  scale_x_continuous(breaks=seq(from=1, to=10, by=1))+
+  theme_bw() +
+  guides(color=FALSE)+
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        strip.background = element_blank(),
+        axis.text=element_text(size=15),
+        axis.title=element_text(size=15))+
+  ylab("A(ij)")+
+  xlab("j")
+```
+
 
 
