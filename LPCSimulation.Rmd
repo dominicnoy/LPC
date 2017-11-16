@@ -7,12 +7,11 @@ output:
   
 ---
 
-```{r setup, include=FALSE, include=FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.path = "/Users/mac/Dropbox/GithubR/LPC/plot/")
 ```
 ## The LPC model 
-
-![](https://raw.githubusercontent.com/dominicnoy/LPC/master/LPC.png)
+<img src="https://raw.githubusercontent.com/dominicnoy/LPC/master/LPC.png" width="400">
 
 
 - A_n is the asynchrony at iteration n, 
@@ -52,7 +51,7 @@ Simulate<-function(N, nseq, alpha, st, sm)
 
 
 
-```{r include=FALSE, cache=FALSE}
+```{r include=FALSE, cache=FALSE, echo=FALSE}
 require(ggplot2)
 ```
 
@@ -81,6 +80,7 @@ ggplot(outc, aes(x=n, y=A_n)) +
   xlab("Iteration number n")
 ```
 
-![](https://raw.githubusercontent.com/dominicnoy/LPC/master/LPCsimpleplot-1.png)
+
+<img src="https://raw.githubusercontent.com/dominicnoy/LPC/master/LPCsimpleplot-1.png" width="600">
 
 
