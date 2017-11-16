@@ -82,7 +82,7 @@ ggplot(outc, aes(x=n, y=A_n)) +
 ```
 
 
-<img src="https://raw.githubusercontent.com/dominicnoy/LPC/master/LPCsimpleplot-1.png" width="600">
+<img src="https://raw.githubusercontent.com/dominicnoy/LPC/master/plot/LPCsimpleplot-1.png" width="600">
 
 
 ###Simulation LPC random
@@ -161,6 +161,10 @@ ggplot() +
   ylab("A(ij)")+
   xlab("j")
 ```
+
+<img src="https://raw.githubusercontent.com/dominicnoy/LPC/master/plot/LPCrandomplot-1.png" width="600">
+
+
 
 
 
