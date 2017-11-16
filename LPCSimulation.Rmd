@@ -7,7 +7,7 @@ output:
   
 ---
 
-```{r setup, include=FALSE, echo=F}
+```{r setup, include=FALSE, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.path = "/Users/mac/Dropbox/GithubR/LPC/plot/")
 ```
 ## The LPC model 
@@ -50,6 +50,12 @@ Simulate<-function(N, nseq, alpha, st, sm)
 }
 ```
 
+
+
+```{r include=FALSE, cache=FALSE}
+require(ggplot2)
+```
+
 ```{r LPCsimpleplot}
 #Set parameter values for simulation  
 set.seed(1234567)
@@ -58,7 +64,6 @@ outc<-as.data.frame(Simulate(N=100, nseq=1, alpha=0.5, st=10, sm=5))
 outc$n<-c(1:dim(outc)[1])
 names(outc)<-c("A_n", "n")
 
-require(ggplot2)
 ggplot(outc, aes(x=n, y=A_n)) +
   geom_point()+
   geom_line()+
