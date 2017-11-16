@@ -88,7 +88,7 @@ ggplot(outc, aes(x=n, y=A_n)) +
 ###Simulation LPC random
 To each series is added a random intercept. This simulates a varying \mu_M across sequences. 
 
-```{r LPCsimpleplot}
+```{r LPCrandomplot}
 #Simulation function with random intercept
 Simulate_random<-function(N, nseq, alpha, st, sm, random) 
 {
@@ -134,7 +134,12 @@ Asy_10<-reshape(As_10,  varying=1:nseq, v.names = "Asynchrony",
 Asy<-rbind(Asy_2, Asy_5, Asy_10)
 Asy$random<-factor(Asy$random, levels= c("Sigma = 2", "Sigma = 5", "Sigma = 10"))
 
-source("/Users/mac/Dropbox/GithubR/LPC/aux_functions/summarySE.R")
+#read from GitHub
+library(RCurl)
+summarySE <- source("https://raw.githubusercontent.com/dominicnoy/LPC/master/aux_functions/summarySE.R")$value
+
+
+
 Asy_g<-summarySE(Asy, measurevar="Asynchrony", groupvars=c("random","id"))
 
 Asy_g$random = factor(Asy_g$random,levels(Asy_g$random)[c(3,2,1)])
